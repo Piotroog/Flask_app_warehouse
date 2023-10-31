@@ -1,21 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Flash Message</title>
+    <!-- Nagłówek -->
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Accountant</title>
+    <style>
+        body {
+            background-color: #f9f6e1;
+        }
+
+        .clock-container {
+            text-align: center;
+        }
+
+        .clock {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .date {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .animate-top {
+            animation: animateTop 1.5s linear;
+        }
+
+        /* Animacja schodzenia napisu */
+        @keyframes animateTop {
+            from {
+                transform: translateY(-100px);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <div style="background: url(https://media.istockphoto.com/id/547214792/pl/zdj%C4%99cie/bia%C5%82ym-tle-%C5%9Bciany-z-ceg%C5%82y.jpg?s=2048x2048&w=is&k=20&c=fTrsFjum98b3GPIpWhGW3luhXlxsqizHsyUh50TezZ0=)" class="page-holder bg-cover">
+        <div class="container py-5">
+            <header class="text-center text-white py-5 animate-top">
+                <h1 class="display-4 font-weight-bold mb-4">Program do zarządzania magazynem</h1>
+            </header>
+        </div>
+    </div>
+    </div>
+</body>
+
+<!-- body -->
+<div class="container text-center">
+    <!-- Aktualny stan konta -->
+    <div id="menu">
+        <a href="{{ url_for('index') }}">Strona główna</a>
+        <a href="{{ url_for('history_site') }}">Historia</a>
+    </div>
+
+    <section class="clock-container">
+        <!-- sekcja zegara -->
+        <br>
+        <div class="clock" id="clock"></div>
+        <div class="date" id="date"></div>
+    </section> <!-- sekcja zegara -->
+
     <div class="flash-modal">
         <div class="flash-content {{ flash_type }}">
             <p>{{ flash_message }}</p>
         </div>
     </div>
-<button onclick="goBack()">Powrót</button>
+    <button onclick="goBack()" type="button" class="btn btn-primary" style="max-width: 150px; margin: 0 auto;">Powrót</button>
 
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    <script>
+        // skrypt zegara
+        function updateClock() { // update zegara
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            const dateStr = now.toLocaleDateString('pl-PL', options);
+            const timeStr = now.toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            document.getElementById('date').textContent = dateStr;
+            document.getElementById('clock').textContent = timeStr;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // update zegara
+    </script> <!-- skrypt do godziny -->
+</div> <!-- Wszystka zawartość umieszczona w tym kontenerze zostanie wyśrodkowana na stronie -->
+{% block content %}{% endblock %}
 <script>
-function goBack() {
-  window.history.back();
-}
+    function openFlashModal(message, messageType) {
+        var modal = document.getElementById("flashModal");
+        var messageParagraph = document.getElementById("flashMessage");
+        messageParagraph.innerHTML = message;
+        if (messageType === "error") {
+            messageParagraph.style.color = "red";
+        } else {
+            messageParagraph.style.color = "green";
+        }
+        modal.style.display = "block";
+    }
+
+    function closeFlashModal() {
+        var modal = document.getElementById("flashModal");
+        modal.style.display = "none";
+    }
 </script>
-<a href="javascript:history.back()">Powrót</a>
 </body>
 </html>
