@@ -2,6 +2,7 @@
 
 {% block content %}
 <html lang="en">
+
 <head>
     <!-- Nagłówek -->
     <meta charset="UTF-8">
@@ -41,46 +42,62 @@
                 transform: translateY(0);
             }
         }
+
+        .custom-width {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .custom-width2 {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
     </style>
 </head>
+
 <body>
     <div class="container text-center">
         <section>
             <br>
             <h2>Historia operacji:</h2>
             <div id="history_form" style="margin-top: 10px; text-align: center;">
-                <form action="{{url_for('history_site')}}" method="POST" style="display: flex; flex-direction: column;">
-                    <p><b><u>1. Historia:</u></b></p>
-                    <label style="margin-bottom: 5px; text-align: center;">Historia od (podaj wartość początkową): </label>
-                    <input type="number" name="start_index" value="1" style="margin-bottom: 5px; text-align: center;" /><br />
-                    <label style="margin-bottom: 5px; text-align: center;">Historia do (podaj wartość końcową): </label>
-                    <input type="number" name="stop_index" value="3" style="margin-bottom: 5px; text-align: center;" /><br />
+                <form action="{{url_for('history_site')}}" method="POST" class="custom-width">
+                    <h3><u>1. Historia:</u></h3>
+                    <div class="mb-3 custom-width">
+                        <label for="start_index" class="form-label">Historia od (podaj wartość początkową):</label>
+                        <input type="number" class="form-control" id="start_index" name="start_index" value="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="stop_index" class="form-label">Historia do (podaj wartość końcową):</label>
+                        <input type="number" class="form-control" id="stop_index" name="stop_index" value="3">
+                    </div>
                     <button type="submit" value="search_history" name="submit_button" class="btn btn-primary" style="max-width: 150px; margin: 0 auto;">Wyszukaj</button>
                 </form>
             </div>
             <div id="history_display">
-    <table class="table table-striped table-hover table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">L.p.</th>
-                <th scope="col">Nazwa wykonanej akcji</th>
-                <th scope="col">Parametry akcji:
-                    <br /> * saldo -> [kwota, komentarz do zmiany]
-                    <br /> * buy, sell -> [nazwa produktu, cena, ilość]
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for element in history %}
-                <tr>
-                    <th scope="row">{{ element.id }}.</th>
-                    <td>{{ element.action }}</td>
-                    <td>{{ element.parameters }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+                <table class="table table-striped table-hover table-bordered" style="width: 50%; margin: auto;">>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">L.p.</th>
+                            <th scope="col">Nazwa wykonanej akcji</th>
+                            <th scope="col">Parametry akcji:
+                                <br /> * saldo -> [kwota, komentarz do zmiany]
+                                <br /> * buy, sell -> [nazwa produktu, cena, ilość]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for element in history %}
+                        <tr>
+                            <th scope="row">{{ element.id }}.</th>
+                            <td>{{ element.action }}</td>
+                            <td>{{ element.parameters }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </section>
         <section class="clock-container">
             <!-- sekcja zegara -->
@@ -112,6 +129,7 @@
             var modal = document.getElementById("flashModal");
             modal.style.display = "none";
         }
+
     </script>
     <script>
         // skrypt zegara
@@ -135,6 +153,7 @@
 
         setInterval(updateClock, 1000);
         updateClock();
+
     </script>
 </body>
 {% endblock %}
