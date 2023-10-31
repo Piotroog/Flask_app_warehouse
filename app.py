@@ -204,12 +204,12 @@ def history_site():
 
         if int(start_index) and int(stop_index):
             if int(start_index) < 1 or int(stop_index) < 1 or int(start_index) > int(stop_index):
-                return openFlashModal("Podano niepoprawny zakres! Zostanie wyświetlona cała dostępna historia!", "error")
+                return openFlashModal("Podano niepoprawny zakres!", "error")
             else:
                 ask_history = History.query.filter(and_(History.id >= int(start_index), (History.id <= int(stop_index)))).all()
 
         else:
-            return openFlashModal("Podano niepoprawny zakres! Zostanie wyświetlona cała dostępna historia!", "error")
+            return openFlashModal("Podano niepoprawny zakres!", "error")
 
     return render_template("history_site.html", history=ask_history)
 

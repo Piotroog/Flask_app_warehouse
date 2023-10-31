@@ -46,82 +46,106 @@
             color: #666;
         }
 
+        #storage_content {
+            width: 50%;
+            margin: auto;
+
+            form button {
+                margin-bottom: 1em;
+            }
+
     </style>
 </head>
 
 <body>
-   <div id="balance_content">
-        <p><b><u>1. Aktualny stan konta</u></b> -----> {{ balance }} gr.</p>
+    <div class="container text-center">
+        <div id="balance_content">
+            <br>
+            <p><b><u>1. Aktualny stan konta</u></b> -----> {{ balance }} gr.</p>
+        </div>
+
+        <div id="storage_content">
+            <p><b><u>2. Obecny stan magazynowy: </u></b></p>
+            <ul>
+                {% for item in storage %}
+                <li>{{ item.product_name }} ----> {{ item.product_quantity }} szt.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div id="buy_form">
+            <form action="{{url_for('index')}}" method="POST">
+                <p><b><u>3. Formularz zakupu:</u></b></p>
+                <label>Nazwa produktu: </label>
+                <br>
+                <input type="text" name="product_name_buy" /><br />
+                <label>Cena jednostkowa: </label>
+                <br>
+                <input type="number" value="0" name="product_price_buy" /><br />
+                <label>Liczba sztuk: </label>
+                <br>
+                <input type="number" value="0" name="product_quantity_buy" /><br />
+                <br>
+                <button type="submit" value="buy_submit" name="submit_button" class="btn btn-primary" style="max-width: 150px; margin: 0 auto;">Realizuj zakup</button>
+            </form>
+        </div>
+        <div id="sell_form">
+            <form action="{{url_for('index')}}" method="POST">
+                <p><b><u>4. Formularz sprzedaży:</u></b></p>
+                <label>Nazwa produktu: </label>
+                <br>
+                <input type="text" name="product_name_sell" /><br />
+                <label>Cena jednostkowa: </label>
+                <br>
+                <input type="number" value="0" name="product_price_sell" /><br />
+                <label>Liczba sztuk: </label>
+                <br>
+                <input type="number" value="0" name="product_quantity_sell" /><br />
+                <br>
+                <button type="submit" value="sell_submit" name="submit_button" class="btn btn-primary" style="max-width: 150px; margin: 0 auto;">Realizuj sprzedaż</button>
+
+            </form>
+        </div>
+        <div id="balance_form">
+            <form action="{{url_for('index')}}" method="POST">
+                <p><b><u>5. Formularz zmiany salda:</u></b></p>
+                <label>Komentarz do zmiany: </label>
+                <br>
+                <input type="text" name="comment_balance_change" /><br />
+                <label>Wartość zmiany salda: </label>
+                <br>
+                <input type="number" value="0" name="balance_change" /><br />
+                <br>
+                <button type="submit" value="balance_submit" name="submit_button" class="btn btn-primary" style="max-width: 150px; margin: 0 auto;">Zapisz zmianę</button>
+            </form>
+        </div>
+    </div>
+    <div id="flashModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeFlashModal()">&times;</span>
+            <p id="flashMessage"></p>
+        </div>
     </div>
 
-    <div id="storage_content">
-        <p><b><u>2. Obecny stan magazynowy: </u></b></p>
-        <ul>
-        {% for item in storage %}
-            <li>{{ item.product_name }} ----> {{ item.product_quantity }} szt.</li>
-        {% endfor %}
-        </ul>
-    </div>
-
-    <div id="buy_form">
-        <form action="{{url_for('index')}}" method="POST">
-            <p><b><u>3. Formularz zakupu:</u></b></p>
-            <label>Nazwa produktu: </label>
-            <input type="text" name="product_name_buy"/><br/>
-            <label>Cena jednostkowa: </label>
-            <input type="number" value="0" name="product_price_buy"/><br/>
-            <label>Liczba sztuk: </label>
-            <input type="number" value="0" name="product_quantity_buy"/><br/>
-            <button type="submit" value="buy_submit" name="submit_button">Realizuj zakup</button>
-        </form>
-    </div>
-    <div id="sell_form">
-        <form action="{{url_for('index')}}" method="POST">
-            <p><b><u>4. Formularz sprzedaży:</u></b></p>
-            <label>Nazwa produktu: </label>
-            <input type="text" name="product_name_sell"/><br/>
-            <label>Cena jednostkowa: </label>
-            <input type="number" value="0" name="product_price_sell"/><br/>
-            <label>Liczba sztuk: </label>
-            <input type="number" value="0" name="product_quantity_sell"/><br/>
-            <button type="submit" value="sell_submit" name="submit_button">Realizuj sprzedaż</button>
-        </form>
-    </div>
-    <div id="balance_form">
-        <form action="{{url_for('index')}}" method="POST">
-            <p><b><u>5. Formularz zmiany salda:</u></b></p>
-            <label>Komentarz do zmiany: </label>
-            <input type="text" name="comment_balance_change"/><br/>
-            <label>Wartość zmiany salda: </label>
-            <input type="number" value="0" name="balance_change"/><br/>
-            <button type="submit" value="balance_submit" name="submit_button">Zapisz zmianę</button>
-        </form>
-    </div>
-<div id="flashModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeFlashModal()">&times;</span>
-        <p id="flashMessage"></p>
-    </div>
-</div>
-
-<script>
-    function openFlashModal(message, messageType) {
-        var modal = document.getElementById("flashModal");
-        var messageParagraph = document.getElementById("flashMessage");
-        messageParagraph.innerHTML = message;
-        if (messageType === "error") {
-            messageParagraph.style.color = "red";
-        } else {
-            messageParagraph.style.color = "green";
+    <script>
+        function openFlashModal(message, messageType) {
+            var modal = document.getElementById("flashModal");
+            var messageParagraph = document.getElementById("flashMessage");
+            messageParagraph.innerHTML = message;
+            if (messageType === "error") {
+                messageParagraph.style.color = "red";
+            } else {
+                messageParagraph.style.color = "green";
+            }
+            modal.style.display = "block";
         }
-        modal.style.display = "block";
-    }
 
-    function closeFlashModal() {
-        var modal = document.getElementById("flashModal");
-        modal.style.display = "none";
-    }
-</script>
+        function closeFlashModal() {
+            var modal = document.getElementById("flashModal");
+            modal.style.display = "none";
+        }
+
+    </script>
 
 </body>
 
