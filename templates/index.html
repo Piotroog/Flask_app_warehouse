@@ -1,0 +1,131 @@
+{% extends "template_page.html" %}
+{% block content %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Program do zarządzania magazynem</title>
+    <style>
+        body {
+            background-color: #f9f6e1;
+        }
+
+        .clock-container {
+            text-align: center;
+        }
+
+        .clock {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .date {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .animate-top {
+            animation: animateTop 1.5s linear;
+        }
+
+        @keyframes animateTop {
+            from {
+                transform: translateY(-100px);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .custom-info-text {
+            font-size: 1em;
+            color: #666;
+        }
+
+    </style>
+</head>
+
+<body>
+   <div id="balance_content">
+        <p><b><u>1. Aktualny stan konta</u></b> -----> {{ balance }} gr.</p>
+    </div>
+
+    <div id="storage_content">
+        <p><b><u>2. Obecny stan magazynowy: </u></b></p>
+        <ul>
+        {% for item in storage %}
+            <li>{{ item.product_name }} ----> {{ item.product_quantity }} szt.</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div id="buy_form">
+        <form action="{{url_for('index')}}" method="POST">
+            <p><b><u>3. Formularz zakupu:</u></b></p>
+            <label>Nazwa produktu: </label>
+            <input type="text" name="product_name_buy"/><br/>
+            <label>Cena jednostkowa: </label>
+            <input type="number" value="0" name="product_price_buy"/><br/>
+            <label>Liczba sztuk: </label>
+            <input type="number" value="0" name="product_quantity_buy"/><br/>
+            <button type="submit" value="buy_submit" name="submit_button">Realizuj zakup</button>
+        </form>
+    </div>
+    <div id="sell_form">
+        <form action="{{url_for('index')}}" method="POST">
+            <p><b><u>4. Formularz sprzedaży:</u></b></p>
+            <label>Nazwa produktu: </label>
+            <input type="text" name="product_name_sell"/><br/>
+            <label>Cena jednostkowa: </label>
+            <input type="number" value="0" name="product_price_sell"/><br/>
+            <label>Liczba sztuk: </label>
+            <input type="number" value="0" name="product_quantity_sell"/><br/>
+            <button type="submit" value="sell_submit" name="submit_button">Realizuj sprzedaż</button>
+        </form>
+    </div>
+    <div id="balance_form">
+        <form action="{{url_for('index')}}" method="POST">
+            <p><b><u>5. Formularz zmiany salda:</u></b></p>
+            <label>Komentarz do zmiany: </label>
+            <input type="text" name="comment_balance_change"/><br/>
+            <label>Wartość zmiany salda: </label>
+            <input type="number" value="0" name="balance_change"/><br/>
+            <button type="submit" value="balance_submit" name="submit_button">Zapisz zmianę</button>
+        </form>
+    </div>
+<div id="flashModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeFlashModal()">&times;</span>
+        <p id="flashMessage"></p>
+    </div>
+</div>
+
+<script>
+    function openFlashModal(message, messageType) {
+        var modal = document.getElementById("flashModal");
+        var messageParagraph = document.getElementById("flashMessage");
+        messageParagraph.innerHTML = message;
+        if (messageType === "error") {
+            messageParagraph.style.color = "red";
+        } else {
+            messageParagraph.style.color = "green";
+        }
+        modal.style.display = "block";
+    }
+
+    function closeFlashModal() {
+        var modal = document.getElementById("flashModal");
+        modal.style.display = "none";
+    }
+</script>
+
+</body>
+
+</html>
+
+
+{% endblock %}

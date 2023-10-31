@@ -1,0 +1,85 @@
+div {
+    font-size: 12px;
+    font-family: Arial;
+    }
+
+input {
+  width: 200px;
+  padding: 5px 5px;
+  margin: 3px 0;
+  box-sizing: border-box;
+}
+
+a {
+  color: #D97BAC;
+  font-size: 14px;
+  padding: 5px 5x;
+  margin: 10px 10px 10px 10px;
+}
+
+a: visited {
+  color: #D97BAC;
+  font-size: 14px;
+  padding: 5px 5x;
+  margin: 10px 10px 10px 10px;
+}
+
+#buy_form {
+  margin: 5px 0;
+  background-color:green;
+  width: 500px;
+  padding: 10px 10px 10px 10px;
+}
+
+#sell_form {
+  margin: 5px 0;
+  background-color:blue;
+  width: 500px;
+  padding: 10px 10px 10px 10px;
+}
+
+#balance_form {
+  margin: 5px 0;
+  background-color:yellow;
+  width: 500px;
+  padding: 10px 10px 10px 10px;
+}
+
+#balance_content {
+  margin: 5px 0;
+  background-color:#D9BC65;
+  width: 500px;
+  padding: 10px 10px 10px 10px;
+}
+
+#storage_content {
+  margin: 5px 0;
+  background-color:#FFB2F4;
+  width: 500px;
+  padding: 10px 10px 10px 10px;
+}
+
+#history_form {
+  margin: 5px 0;
+  background-color:#C3EAFF;
+  width: 500px;
+  padding: 10px 10px 10px 10px;
+}
+
+#history_display {
+  margin: 5px 0;
+  background-color:#CCAFC9;
+  width: 500px;
+  padding: 10px 10px 10px 10px;
+}
+
+button {
+  width: 200px;
+  padding: 5px 5px;
+  margin: 3px 0;
+  box-sizing: border-box;
+}
+
+
+
+

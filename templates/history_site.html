@@ -1,0 +1,134 @@
+{% extends "template_page.html" %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <!-- Nagłówek -->
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Historia operacji</title>
+    <style>
+        body {
+            background-color: #f9f6e1;
+        }
+
+        .clock-container {
+            text-align: center;
+        }
+
+        .clock {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .date {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .animate-top {
+            animation: animateTop 1.5s linear;
+        }
+
+        /* Animacja schodzenia napisu */
+        @keyframes animateTop {
+            from {
+                transform: translateY(-100px);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <section>
+            <br>
+            <h2>Historia operacji:</h2>
+            <div id="history_form" style="margin-top: 10px; text-align: center;">
+                <form action="{{url_for('history_site')}}" method="POST" style="display: flex; flex-direction: column;">
+                    <p><b><u>1. Historia:</u></b></p>
+                    <label style="margin-bottom: 5px; text-align: center;">Historia od (podaj wartość początkową): </label>
+                    <input type="number" name="start_index" value="1" style="margin-bottom: 5px; text-align: center;" /><br />
+                    <label style="margin-bottom: 5px; text-align: center;">Historia do (podaj wartość końcową): </label>
+                    <input type="number" name="stop_index" value="3" style="margin-bottom: 5px; text-align: center;" /><br />
+                    <button type="submit" value="search_history" name="submit_button" class="btn btn-primary" style="max-width: 150px; margin: 0 auto;">Wyszukaj</button>
+                </form>
+            </div>
+            <div id="history_display">
+                <table>
+                    <tr>
+                        <td>L.p. </td>
+                        <td> Nazwa wykonanej akcji </td>
+                        <td> Parametry akcji: <br />
+                            * saldo -> [kwota, komentarz do zmiany] <br />
+                            * buy, sell -> [nazwa produktu, cena, ilość]</td>
+                    </tr>
+                    {% for element in history %}
+                    <tr>
+                        <td>{{ element.id }}.</td>
+                        <td>{{ element.action }}</td>
+                        <td>{{ element.parameters }}</td>
+                    {% endfor %}
+                </table>
+            </div>
+        </section>
+        <section class="clock-container">
+            <!-- sekcja zegara -->
+            <br>
+            <div class="clock" id="clock"></div>
+            <div class="date" id="date"></div>
+        </section>
+    </div>
+    <div id="flashModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeFlashModal()">&times;</span>
+            <p id="flashMessage"></p>
+        </div>
+    </div>
+    <script>
+        function openFlashModal(message, messageType) {
+            var modal = document.getElementById("flashModal");
+            var messageParagraph = document.getElementById("flashMessage");
+            messageParagraph.innerHTML = message;
+            if (messageType === "error") {
+                messageParagraph.style.color = "red";
+            } else {
+                messageParagraph.style.color = "green";
+            }
+            modal.style.display = "block";
+        }
+
+        function closeFlashModal() {
+            var modal = document.getElementById("flashModal");
+            modal.style.display = "none";
+        }
+    </script>
+    <script>
+        // skrypt zegara
+        function updateClock() { // update zegara
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            const dateStr = now.toLocaleDateString('pl-PL', options);
+            const timeStr = now.toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            document.getElementById('date').textContent = dateStr;
+            document.getElementById('clock').textContent = timeStr;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+{% endblock %}
