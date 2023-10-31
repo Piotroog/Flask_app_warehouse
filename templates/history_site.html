@@ -59,22 +59,28 @@
                 </form>
             </div>
             <div id="history_display">
-                <table>
-                    <tr>
-                        <td>L.p. </td>
-                        <td> Nazwa wykonanej akcji </td>
-                        <td> Parametry akcji: <br />
-                            * saldo -> [kwota, komentarz do zmiany] <br />
-                            * buy, sell -> [nazwa produktu, cena, ilość]</td>
-                    </tr>
-                    {% for element in history %}
-                    <tr>
-                        <td>{{ element.id }}.</td>
-                        <td>{{ element.action }}</td>
-                        <td>{{ element.parameters }}</td>
-                    {% endfor %}
-                </table>
-            </div>
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">L.p.</th>
+                <th scope="col">Nazwa wykonanej akcji</th>
+                <th scope="col">Parametry akcji:
+                    <br /> * saldo -> [kwota, komentarz do zmiany]
+                    <br /> * buy, sell -> [nazwa produktu, cena, ilość]
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for element in history %}
+                <tr>
+                    <th scope="row">{{ element.id }}.</th>
+                    <td>{{ element.action }}</td>
+                    <td>{{ element.parameters }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
         </section>
         <section class="clock-container">
             <!-- sekcja zegara -->
