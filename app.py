@@ -10,6 +10,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 db = SQLAlchemy(app)
 
 
+
+
 class History(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     action = db.Column(db.String)
